@@ -6,10 +6,8 @@ public interface UserSearchRepository
         extends ElasticsearchRepository<UserDocument, Long> {
 // List<UserDocument> findByNameContainingIgnoreCase(String name);
   //New method to search by name or department name
-  List<UserDocument> findByNameContainingIgnoreCaseOrDepartmentNameContainingIgnoreCase(
-          String name,
-          String departmentName
-  );
-
-
+//  List<UserDocument> findByNameContainingIgnoreCaseOrDepartmentNameContainingIgnoreCase(
+//          String name,
+//          String departmentName
+//  );
 }
