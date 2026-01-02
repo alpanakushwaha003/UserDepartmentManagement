@@ -1,0 +1,48 @@
+-- -- sql
+-- -- File: db/schema-and-data.sql
+-- CREATE DATABASE IF NOT EXISTS testdb;
+--
+-- USE testdb;
+--
+-- CREATE TABLE IF NOT EXISTS departments (
+--               id BIGINT AUTO_INCREMENT PRIMARY KEY,
+--               name VARCHAR(100) NOT NULL UNIQUE
+--     );
+--
+-- CREATE TABLE IF NOT EXISTS users (
+--      id BIGINT AUTO_INCREMENT PRIMARY KEY,
+--      name VARCHAR(200) NOT NULL,
+--     email VARCHAR(200) UNIQUE,
+--     department_id BIGINT,
+--     CONSTRAINT fk_dept FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE SET NULL
+--     );
+--
+-- -- idempotent department inserts
+-- INSERT INTO departments (name) VALUES
+--                                    ('Engineering'), ('Sales'), ('Marketing')
+--     ON DUPLICATE KEY UPDATE name = name;
+--
+-- -- idempotent user inserts (email is unique so ON DUPLICATE KEY UPDATE works)
+-- INSERT INTO users (name, email, department_id)
+-- SELECT 'Alice Johnson', 'alice.johnson@example.com', id FROM departments WHERE name = 'Engineering'
+--     ON DUPLICATE KEY UPDATE email = email;
+--
+-- INSERT INTO users (name, email, department_id)
+-- SELECT 'Bob Smith', 'bob.smith@example.com', id FROM departments WHERE name = 'Sales'
+--     ON DUPLICATE KEY UPDATE email = email;
+--
+-- INSERT INTO users (name, email, department_id)
+-- SELECT 'Alpana k', 'alpanakushwah012@gmail.com', id FROM departments WHERE name = 'Sales'
+--     ON DUPLICATE KEY UPDATE email = email;
+--
+-- INSERT INTO users (name, email, department_id)
+-- SELECT 'Charlie Davis', 'charlie.davis@example.com', id FROM departments WHERE name = 'Marketing'
+--     ON DUPLICATE KEY UPDATE email = email;
+--
+-- INSERT INTO users (name, email, department_id)
+-- SELECT 'Bob Jane', 'bobjane@xxample.com', id FROM departments WHERE name = 'Marketing'
+--     ON DUPLICATE KEY UPDATE email = email;
+--
+-- INSERT INTO users (name, email, department_id)
+-- SELECT 'Alicia Keys', 'alicia.keys@example.com', id FROM departments WHERE name = 'Engineering'
+--     ON DUPLICATE KEY UPDATE email = email;
