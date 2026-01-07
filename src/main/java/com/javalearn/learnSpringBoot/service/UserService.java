@@ -76,8 +76,15 @@ public class UserService {
     public List<UserDTO> findByDepartment(String departmentName) {
         return userRepository.findByDepartment_Name(departmentName).stream().map(this::mapToDTO).toList();
     }
-
-    public List<User> findByPrefix(String prefix) {
-        return userRepository.findByNameStartingWithIgnoreCase(prefix);
+    public List<UserDTO> findByDepartmentId(Long departmentId) {
+        return userRepository
+                .findByDepartment_Id(departmentId)
+                .stream()
+                .map(this::mapToDTO)
+                .toList();
     }
+
+//    public List<User> findByPrefix(String prefix) {
+//        return userRepository.findByNameStartingWithIgnoreCase(prefix);
+//    }
 }

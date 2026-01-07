@@ -23,13 +23,17 @@ public class UserController {
     public List<UserDTO> getUserByDepartment(@RequestParam String department) {
         return userService.findByDepartment(department);
     }
-    @GetMapping("/prefix")
-    public List<User> getUserByPrefix(@RequestParam String prefix) {
-        return userService.findByPrefix(prefix);
-    }
+//    @GetMapping("/prefix")
+//    public List<User> getUserByPrefix(@RequestParam String prefix) {
+//        return userService.findByPrefix(prefix);
+//    }
     @GetMapping("/search")
     public List<UserDTO> searchUsers(@RequestParam String q) {
         return userSearchService.search(q);
+    }
+    @GetMapping("/departmentSearchById")
+    public List<UserDTO> getUsersByDepartmentId(@RequestParam Long departmentId) {
+        return userService.findByDepartmentId(departmentId);
     }
 
 }

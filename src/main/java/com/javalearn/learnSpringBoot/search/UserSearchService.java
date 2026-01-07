@@ -1,5 +1,4 @@
 package com.javalearn.learnSpringBoot.search;
-
 import com.javalearn.learnSpringBoot.dto.UserDTO;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +19,6 @@ public class UserSearchService {
     private ElasticsearchOperations elasticsearchOperations;
     public List<UserDTO> search(String searchText) {
 
-//        NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
-//                .withQuery(
-//                        QueryBuilders.boolQuery()
-//                                .should(QueryBuilders.wildcardQuery("name", "*" + searchText.toLowerCase() + "*"))
-//                                .should(QueryBuilders.wildcardQuery("departmentName", "*" + searchText.toLowerCase() + "*"))
-//                )
-//                .build();
         NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(
                         QueryBuilders.boolQuery()
