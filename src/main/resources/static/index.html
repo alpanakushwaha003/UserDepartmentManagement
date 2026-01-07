@@ -221,59 +221,72 @@
 
 <script>
     function createUser() {
-        const msg = document.getElementById("createMsg");
+     const msg = document.getElementById("createMsg");
 
-        const user = {
-            name: name.value.trim(),
-            email: email.value.trim(),
-            department: { name: department.value.trim() }
-        };
+     const nameInput = document.getElementById("name");
+     const emailInput = document.getElementById("email");
+     const deptInput = document.getElementById("department");
 
-        fetch("/createUser", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(user)
-        })
-        .then(() => msg.innerText = "User created successfully")
-        .catch(() => msg.innerText = "Error creating user");
-    }
+     const user = {
+         name: nameInput.value.trim(),
+         email: emailInput.value.trim(),
+         department: {
+             name: deptInput.value.trim()
+         }
+     };
 
-    function searchUsers() {
-        const q = searchQuery.value.trim();
-        if (!q) return;
+     fetch("http://localhost:8080/createUser", {
+         method: "POST",
+         headers: { "Content-Type": "application/json" },
+         body: JSON.stringify(user)
+     })
+     .then(res => {
+         if (!res.ok) {
+             return res.text().then(err => { throw err });
+         }
+         return res.json();
+     })
+     .then(() => msg.innerText = "User created successfully")
+     .catch(err => msg.innerText = "Error: " + err);
+ }
 
-        fetch(`/search?q=${encodeURIComponent(q)}`)
-            .then(res => res.json())
-            .then(data => {
-                searchResults.innerHTML = "";
-                data.forEach(u => {
-                    searchResults.innerHTML += `
-                        <li>
-                            <div>${u.name}<br>${u.email || ""}</div>
-                            <span class="badge">${u.departmentName}</span>
-                        </li>`;
-                });
-            });
-    }
 
-    function searchByDepartmentId() {
-        const id = deptIdInput.value.trim();
+     function searchUsers() {
+         const q = searchQuery.value.trim();
+         if (!q) return;
 
-        if (!id) return;
+         fetch(`/search?q=${encodeURIComponent(q)}`)
+             .then(res => res.json())
+             .then(data => {
+                 searchResults.innerHTML = "";
+                 data.forEach(u => {
+                     searchResults.innerHTML += `
+                         <li>
+                             <div>${u.name}<br>${u.email || ""}</div>
+                             <span class="badge">${u.departmentName}</span>
+                         </li>`;
+                 });
+             });
+     }
 
-        fetch(`/departmentSearchById?departmentId=${id}`)
-            .then(res => res.json())
-            .then(data => {
-                deptSearchResults.innerHTML = "";
-                data.forEach(u => {
-                    deptSearchResults.innerHTML += `
-                        <li>
-                            <div>${u.name}<br>${u.email}</div>
-                            <span class="badge">${u.departmentName}</span>
-                        </li>`;
-                });
-            });
-    }
+     function searchByDepartmentId() {
+         const id = deptIdInput.value.trim();
+
+         if (!id) return;
+
+         fetch(`/departmentSearchById?departmentId=${id}`)
+             .then(res => res.json())
+             .then(data => {
+                 deptSearchResults.innerHTML = "";
+                 data.forEach(u => {
+                     deptSearchResults.innerHTML += `
+                         <li>
+                             <div>${u.name}<br>${u.email}</div>
+                             <span class="badge">${u.departmentName}</span>
+                         </li>`;
+                 });
+             });
+     }
 </script>
 
 </body>

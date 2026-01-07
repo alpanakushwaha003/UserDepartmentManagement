@@ -6,7 +6,7 @@ import com.javalearn.learnSpringBoot.search.UserSearchService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
-
+@CrossOrigin(origins = "*")
 @RestController
 public class UserController {
     @Autowired
