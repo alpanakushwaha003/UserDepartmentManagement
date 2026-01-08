@@ -8,6 +8,6 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findByDepartment_Name(String departmentName);
+    List<User> findByDepartment_Id(Long departmentId);
 
-    List<User> findByNameStartingWithIgnoreCase(String prefix);
 }

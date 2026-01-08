@@ -1,6 +1,6 @@
 package com.javalearn.learnSpringBoot.entity;
 import java.io.Serializable;
-import jakarta.persistence.*;
+import javax.persistence.*;
 @Entity
 @Table(name = "departments")
 public class Department {

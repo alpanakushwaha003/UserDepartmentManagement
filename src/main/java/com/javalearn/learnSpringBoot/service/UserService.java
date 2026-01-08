@@ -1,14 +1,14 @@
 package com.javalearn.learnSpringBoot.service;
-
 import com.javalearn.learnSpringBoot.dto.UserDTO;
 import com.javalearn.learnSpringBoot.entity.User;
-import jakarta.annotation.PostConstruct;
+import javax.transaction.Transactional;
 import com.javalearn.learnSpringBoot.entity.Department;
 import com.javalearn.learnSpringBoot.repository.UserRepository;
 import com.javalearn.learnSpringBoot.repository.DepartmentRepository;
 import com.javalearn.learnSpringBoot.search.UserDocument;
+import com.javalearn.learnSpringBoot.search.DepartmentDocument;
 import com.javalearn.learnSpringBoot.repository.UserSearchRepository;
-import jakarta.transaction.Transactional;
+import com.javalearn.learnSpringBoot.repository.DepartmentSearchRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -24,6 +24,8 @@ public class UserService {
     private DepartmentRepository departmentRepository;
     @Autowired
     private UserSearchRepository userSearchRepository;
+    @Autowired
+    private DepartmentSearchRepository departmentSearchRepository;
 
     private UserDTO mapToDTO(User user) {
         UserDTO dto = new UserDTO();
@@ -34,21 +36,7 @@ public class UserService {
         dto.setDepartmentName(user.getDepartment().getName());
         return dto;
     }
-    @PostConstruct
-    public void loadExistingUsersIntoElasticsearch() {
 
-        List<User> users = userRepository.findAll();
-
-        List<UserDocument> docs = users.stream().map(user -> {
-            UserDocument doc = new UserDocument();
-            doc.setId(user.getId());
-            doc.setName(user.getName());
-            doc.setEmail(user.getEmail());
-            doc.setDepartmentName(user.getDepartment().getName());
-            return doc;
-        }).toList();
-        userSearchRepository.saveAll(docs);
-    }
 
     @Transactional
     @CacheEvict(value = "usersByDepartment", key = "#user.department.name")
@@ -76,8 +64,11 @@ public class UserService {
     public List<UserDTO> findByDepartment(String departmentName) {
         return userRepository.findByDepartment_Name(departmentName).stream().map(this::mapToDTO).toList();
     }
-
-    public List<User> findByPrefix(String prefix) {
-        return userRepository.findByNameStartingWithIgnoreCase(prefix);
+    public List<UserDTO> findByDepartmentId(Long departmentId) {
+        return userRepository
+                .findByDepartment_Id(departmentId)
+                .stream()
+                .map(this::mapToDTO)
+                .toList();
     }
 }
